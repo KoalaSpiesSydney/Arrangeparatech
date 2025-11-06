@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>PTE – Arrange Missing Paragraphs (Part 2) | Modern English Australia</title>
+<style>
+:root{
+  --bg:#1e1e1e;--card:#2a2a2a;--ink:#f5f5f5;--muted:#bbbbbb;
+  --accent:#ff7a1a;--line:#3a3a3a;--ok:#1db954;--err:#e74c3c;
+  --radius:14px;--shadow:0 6px 24px rgba(0,0,0,.25);
+}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--bg);color:var(--ink);display:flex;flex-direction:column;
+  min-height:100vh;line-height:1.7;}
+header{
+  background:linear-gradient(90deg,#2a2a2a,#1e1e1e);
+  color:var(--accent);text-align:center;padding:1.5rem;position:relative;
+}
+header h1{margin:0;font-size:1.5rem;}
+header span{background:var(--accent);color:#1e1e1e;padding:4px 10px;
+  border-radius:999px;margin-right:6px;font-weight:700;}
+#timer{position:absolute;right:1rem;top:1.2rem;background:var(--accent);
+  color:#1e1e1e;padding:.4rem .8rem;border-radius:8px;font-weight:700;
+  box-shadow:0 0 10px rgba(0,0,0,.3);}
+main{flex:1;width:min(1100px,100%);margin:2rem auto;padding:0 1rem;}
+.instructions{text-align:center;color:var(--muted);margin-bottom:2rem;}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+@media(max-width:800px){.columns{grid-template-columns:1fr;}}
+.column{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:1rem;border:1px solid var(--line);max-height:600px;overflow-y:auto;}
+.column h2{text-align:center;color:var(--accent);font-size:1.2rem;margin-top:0;
+  position:sticky;top:0;background:var(--card);padding-bottom:.5rem;}
+.paragraph,.blank{background:#333;border:1px solid var(--line);border-radius:10px;
+  padding:1rem;margin-bottom:1rem;transition:transform .15s ease;white-space:pre-line;}
+.blank{background:#1e1e1e;color:#999;text-align:center;font-style:italic;
+  border:2px dashed var(--accent);min-height:80px;}
+.paragraph:hover{transform:scale(1.02);}
+.dragging{opacity:.5;}
+.filled{border-style:solid;}
+button{display:block;margin:2rem auto 1rem;padding:1rem 2.5rem;background:var(--accent);
+  color:#1e1e1e;border:none;border-radius:12px;font-weight:700;font-size:1.1rem;
+  cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.3);transition:all .3s ease;}
+button:hover{background:#e56e00;color:#fff;transform:scale(1.03);}
+.feedback{text-align:center;font-weight:700;margin-top:1rem;}
+.correct{color:var(--ok);} .incorrect{color:var(--err);}
+.navbar{text-align:center;margin-top:2rem;}
+.navbar a{display:inline-block;margin:.3rem .5rem;color:var(--accent);
+  background:#2a2a2a;padding:.7rem 1.4rem;border-radius:8px;text-decoration:none;
+  font-weight:700;transition:background .3s ease;}
+.navbar a:hover{background:#ff9a42;color:#1e1e1e;}
+footer{background:#2a2a2a;color:var(--muted);text-align:center;padding:1rem;}
+footer span{color:var(--accent);font-weight:700;}
+</style>
+</head>
+
+<body>
+<header>
+  <h1><span>Modern English Australia</span> PTE – Arrange Missing Paragraphs (Part 2)</h1>
+  <div id="timer">10:00</div>
+</header>
+
+<main>
+  <p class="instructions">
+    Drag the <strong>missing paragraphs</strong> from the <strong>Paragraph Bank</strong> into the correct blank spaces.  
+    You can move or replace them anytime before submitting.
+  </p>
+
+  <div class="columns">
+    <div class="column" id="target"><h2>Arrange Order</h2></div>
+    <div class="column" id="source"><h2>Paragraph Bank</h2></div>
+  </div>
+
+  <button id="checkBtn">Check Answers</button>
+  <div id="feedback" class="feedback"></div>
+
+  <div class="navbar">
+    <a href="index.html">🏠 Home</a>
+    <a href="part1.html">1️⃣ Part 1</a>
+    <a href="part2.html">2️⃣ Part 2</a>
+    <a href="part3.html">3️⃣ Part 3</a>
+  </div>
+</main>
+
+<footer>
+  © <span>Koala Spies Sydney</span> · Modern English Australia · All Rights Reserved
+</footer>
+
+<script>
+// ===== Paragraphs =====
+const paragraphs=[
+`Technology has undeniably transformed the way we work—but whether it has made us work less hard is debatable. On the surface, automation and digital tools seem to boost productivity and enhance efficiency. Tasks that once took hours can now be completed in minutes.`,
+`In this way communication has become instant, data is centralized, and collaboration spans continents. For instance, Zoom meetings help remote workers work together seamlessly, simultaneously working documents around the world instantly or even designing on platforms. Call centres can operate 24 hours a day and you can buy almost anything you want, anytime online. In short, we can do more, faster and include more people.`,
+`These advances augment our capabilities, allowing us to achieve more with fewer resources. Take the development of the COVID vaccine in just a few months, thanks to technology and international collaboration. Imagine what we could do for cancer treatments in the future, not to mention climate solution and space travel.`,
+`Yet beneath this apparent ease lies a paradox. The boundaries between work and personal life have deteriorated. Remote access and constant connectivity mean many feel compelled to be “always on,” leading to mental fatigue and burnout.`,
+`While physical effort may have declined, cognitive load has increased. The pressure to keep up with rapid technological shifts and constant notifications can be overwhelming.`,
+`Moreover, technology often raises expectations. Faster output becomes the norm, not the exception. Instead of freeing us, it sometimes enslaves us to tighter deadlines and higher standards. In this sense, we may be working harder—just differently.`,
+`Which has led us to the topic of AI slop that has invaded our social media. AI slop is poor created videos and posts which are kind of convincing but off-putting at the same time because we know they are just imitation of human experiences. Will our favourite musicians and artist one day be replaced by AI?`,
+`Ultimately, technology doesn’t guarantee less work; it reshapes the nature of work. Whether that shift is liberating or burdensome depends on how we adapt, set boundaries, and use these tools to serve human needs rather than undermine them.`
+];
+
+// ===== Build Columns =====
+const target=document.getElementById("target");
+const source=document.getElementById("source");
+
+for(let i=0;i<paragraphs.length;i++){
+  if(i%2===0){
+    const p=document.createElement("div");
+    p.className="paragraph";
+    p.textContent=paragraphs[i];
+    target.appendChild(p);
+  }else{
+    const blank=document.createElement("div");
+    blank.className="blank";
+    blank.textContent="Drop paragraph here";
+    blank.dataset.answer=paragraphs[i];
+    target.appendChild(blank);
+  }
+}
+
+// ===== Shuffle Missing Ones =====
+function shuffle(a){return a.sort(()=>Math.random()-0.5);}
+const missing=shuffle(paragraphs.filter((_,i)=>i%2!==0));
+missing.forEach(t=>{
+  const div=document.createElement("div");
+  div.className="paragraph";
+  div.draggable=true;
+  div.textContent=t;
+  source.appendChild(div);
+});
+
+// ===== Drag & Drop =====
+let dragged=null;
+document.addEventListener("dragstart",e=>{
+  if(e.target.classList.contains("paragraph")){
+    dragged=e.target;
+    setTimeout(()=>e.target.classList.add("dragging"),0);
+  }
+});
+document.addEventListener("dragend",()=>{if(dragged){dragged.classList.remove("dragging");dragged=null;}});
+document.querySelectorAll(".blank,#source").forEach(zone=>{
+  zone.addEventListener("dragover",e=>e.preventDefault());
+  zone.addEventListener("drop",()=>{
+    if(!dragged)return;
+    if(zone.classList.contains("blank")){
+      if(zone.dataset.user){
+        const old=document.createElement("div");
+        old.className="paragraph";old.draggable=true;
+        old.textContent=zone.dataset.user;
+        source.appendChild(old);
+      }
+      zone.textContent=dragged.textContent;
+      zone.classList.add("filled");
+      zone.dataset.user=dragged.textContent.trim();
+      dragged.remove();
+    }else if(zone.id==="source"){
+      const copy=document.createElement("div");
+      copy.className="paragraph";copy.draggable=true;
+      copy.textContent=dragged.textContent;
+      zone.appendChild(copy);
+      dragged.remove();
+    }
+  });
+});
+
+// ===== Check Answers =====
+document.getElementById("checkBtn").addEventListener("click",()=>{
+  const blanks=[...document.querySelectorAll(".blank")];
+  let score=0;
+  blanks.forEach(b=>{if(b.dataset.user===b.dataset.answer)score++;});
+  const fb=document.getElementById("feedback");
+  fb.innerHTML=score===4
+    ?`✅ <span class="correct">Perfect! You scored ${score}/4.</span>`
+    :`⚠️ <span class="incorrect">You scored ${score}/4 correct paragraphs.</span>`;
+  localStorage.setItem("PTE_Part2_Score",score);
+});
+
+// ===== 10-Minute Timer =====
+let timeLeft=10*60;
+const timerDisplay=document.getElementById("timer");
+const btn=document.getElementById("checkBtn");
+const countdown=setInterval(()=>{
+  const m=Math.floor(timeLeft/60);
+  const s=timeLeft%60;
+  timerDisplay.textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  if(timeLeft<=0){
+    clearInterval(countdown);
+    timerDisplay.textContent="00:00";
+    btn.disabled=true;btn.style.opacity=0.6;
+    document.getElementById("feedback").innerHTML=`⏰ <span class="incorrect">Time’s up!</span>`;
+  }
+  timeLeft--;
+},1000);
+</script>
+</body>
+</html>

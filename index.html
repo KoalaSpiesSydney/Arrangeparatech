@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Arranging Paragraphs – Reading Test | Modern English Australia</title>
+<style>
+:root {
+  --bg:#1e1e1e;
+  --card:#2a2a2a;
+  --ink:#f5f5f5;
+  --muted:#bbbbbb;
+  --accent:#ff7a1a;
+  --radius:14px;
+  --shadow:0 6px 24px rgba(0,0,0,.25);
+}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+  text-align:center;
+  line-height:1.7;
+}
+header{
+  background:linear-gradient(90deg,#2a2a2a,#1e1e1e);
+  color:var(--accent);
+  padding:2rem 1rem;
+}
+header h1{margin:0;font-size:1.8rem;}
+header span{
+  background:var(--accent);
+  color:#1e1e1e;
+  padding:4px 10px;
+  border-radius:999px;
+  margin-right:6px;
+  font-weight:700;
+}
+main{
+  flex:1;
+  width:min(800px,100%);
+  margin:2rem auto;
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:2rem 1.5rem;
+}
+a.part{
+  display:block;
+  background:var(--accent);
+  color:#1e1e1e;
+  text-decoration:none;
+  font-weight:700;
+  font-size:1.1rem;
+  padding:1rem 0;
+  border-radius:12px;
+  margin:1rem auto;
+  width:60%;
+  transition:all .3s ease;
+}
+a.part:hover{background:#e56e00;color:#fff;transform:scale(1.03);}
+.scorebox{
+  margin-top:2rem;
+  background:#333;
+  border-radius:12px;
+  padding:1rem;
+  font-weight:700;
+  box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+.total{
+  margin-top:1.5rem;
+  font-size:1.3rem;
+  color:var(--accent);
+}
+footer{
+  background:#2a2a2a;
+  color:var(--muted);
+  padding:1rem;
+  font-size:.95rem;
+}
+footer span{color:var(--accent);font-weight:700;}
+</style>
+</head>
+
+<body>
+<header>
+  <h1><span>Modern English Australia</span> Arranging Paragraphs – Reading Test</h1>
+</header>
+
+<main>
+  <p>Complete the three arranging paragraph tasks below. Each task must be done within the time limit.  
+     When finished, return to this page to see your <strong>total score (out of 10)</strong>.</p>
+
+  <a href="part1.html" class="part">🟩 Part 1 – Technology & Society (4 marks)</a>
+  <a href="part2.html" class="part">🟦 Part 2 – Technology & Work (4 marks)</a>
+  <a href="part3.html" class="part">🟨 Part 3 – Social Media & Children (2 marks)</a>
+
+  <div class="scorebox">
+    <p>Part 1 Score: <span id="p1">Not completed</span></p>
+    <p>Part 2 Score: <span id="p2">Not completed</span></p>
+    <p>Part 3 Score: <span id="p3">Not completed</span></p>
+    <div class="total">Total Score: <span id="total">0 / 10</span></div>
+  </div>
+</main>
+
+<footer>
+  © <span>Koala Spies Sydney</span> · Modern English Australia · All Rights Reserved
+</footer>
+
+<script>
+// ===== Retrieve Scores from localStorage =====
+function getScore(key, max){
+  const val = localStorage.getItem(key);
+  return val ? parseInt(val) : null;
+}
+const p1 = getScore("PTE_Part1_Score", 4);
+const p2 = getScore("PTE_Part2_Score", 4);
+const p3 = getScore("PTE_Part3_Score", 2);
+
+document.getElementById("p1").textContent = p1 !== null ? `${p1} / 4` : "Not completed";
+document.getElementById("p2").textContent = p2 !== null ? `${p2} / 4` : "Not completed";
+document.getElementById("p3").textContent = p3 !== null ? `${p3} / 2` : "Not completed";
+
+const total = (p1 || 0) + (p2 || 0) + (p3 || 0);
+document.getElementById("total").textContent = `${total} / 10`;
+</script>
+</body>
+</html>

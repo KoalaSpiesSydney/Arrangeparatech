@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>PTE – Re-order Paragraph (Part 1) | Modern English Australia</title>
+<style>
+:root {
+  --bg:#1e1e1e;
+  --card:#2a2a2a;
+  --ink:#f5f5f5;
+  --muted:#bbbbbb;
+  --accent:#ff7a1a;
+  --line:#3a3a3a;
+  --ok:#1db954;
+  --err:#e74c3c;
+  --radius:14px;
+  --shadow:0 6px 24px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+  line-height:1.7;
+}
+
+/* ===== Header ===== */
+header{
+  background:linear-gradient(90deg,#2a2a2a,#1e1e1e);
+  color:var(--accent);
+  text-align:center;
+  padding:1.5rem;
+  position:relative;
+}
+header h1{margin:0;font-size:1.5rem;}
+header span{
+  background:var(--accent);
+  color:#1e1e1e;
+  padding:4px 10px;
+  border-radius:999px;
+  margin-right:6px;
+  font-weight:700;
+}
+#timer{
+  position:absolute;
+  right:1rem;
+  top:1.2rem;
+  background:var(--accent);
+  color:#1e1e1e;
+  padding:0.4rem 0.8rem;
+  border-radius:8px;
+  font-weight:700;
+  box-shadow:0 0 10px rgba(0,0,0,0.3);
+}
+
+/* ===== Main ===== */
+main{
+  flex:1;
+  width:min(1100px,100%);
+  margin:2rem auto;
+  padding:0 1rem;
+}
+.instructions{
+  text-align:center;
+  color:var(--muted);
+  margin-bottom:2rem;
+}
+
+/* ===== Columns ===== */
+.columns{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.5rem;
+}
+@media(max-width:800px){
+  .columns{grid-template-columns:1fr;}
+}
+.column{
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:1rem;
+  min-height:420px;
+  border:1px solid var(--line);
+}
+.column h2{
+  text-align:center;
+  color:var(--accent);
+  font-size:1.2rem;
+  margin-top:0;
+}
+
+/* ===== Sentences ===== */
+.sentence{
+  background:#333;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:.8rem 1rem;
+  margin-bottom:.8rem;
+  cursor:grab;
+  user-select:none;
+  transition:transform .15s ease;
+}
+.sentence:hover{transform:scale(1.02);}
+.sentence.dragging{opacity:.5;}
+
+/* ===== Button & Feedback ===== */
+button{
+  display:block;
+  margin:2rem auto 1rem;
+  padding:1rem 2.5rem;
+  background:var(--accent);
+  color:#1e1e1e;
+  border:none;
+  border-radius:12px;
+  font-weight:700;
+  font-size:1.1rem;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+  transition:all .3s ease;
+}
+button:hover{
+  background:#e56e00;
+  color:#fff;
+  transform:scale(1.03);
+}
+.feedback{
+  text-align:center;
+  font-weight:700;
+  margin-top:1rem;
+}
+.correct{color:var(--ok);}
+.incorrect{color:var(--err);}
+
+/* ===== Navigation ===== */
+.navbar{
+  text-align:center;
+  margin-top:2rem;
+}
+.navbar a{
+  display:inline-block;
+  margin:.3rem .5rem;
+  color:var(--accent);
+  background:#2a2a2a;
+  padding:.7rem 1.4rem;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:700;
+  transition:background .3s ease;
+}
+.navbar a:hover{
+  background:#ff9a42;
+  color:#1e1e1e;
+}
+
+/* ===== Footer ===== */
+footer{
+  background:#2a2a2a;
+  color:var(--muted);
+  text-align:center;
+  padding:1rem;
+}
+footer span{color:var(--accent);font-weight:700;}
+</style>
+</head>
+
+<body>
+<header>
+  <h1><span>Modern English Australia</span> PTE – Re-order Paragraph (Part 1)</h1>
+  <div id="timer">05:00</div>
+</header>
+
+<main>
+  <p class="instructions">
+    Drag the sentences from the <strong>Sentence Bank</strong> into the <strong>Arrange Order</strong> column to form a logical paragraph about Artificial Intelligence.
+  </p>
+
+  <div class="columns">
+    <div class="column" id="target">
+      <h2>Arrange Order</h2>
+    </div>
+    <div class="column" id="source">
+      <h2>Sentence Bank</h2>
+    </div>
+  </div>
+
+  <button id="checkBtn">Check Answers</button>
+  <div id="feedback" class="feedback"></div>
+
+  <div class="navbar">
+    <a href="index.html">🏠 Home</a>
+    <a href="part1.html">1️⃣ Part 1</a>
+    <a href="part2.html">2️⃣ Part 2</a>
+    <a href="part3.html">3️⃣ Part 3</a>
+  </div>
+</main>
+
+<footer>
+  © <span>Koala Spies Sydney</span> · Modern English Australia · All Rights Reserved
+</footer>
+
+<script>
+// ===== Correct Order =====
+const sentences = [
+  "Artificial intelligence presents both transformative opportunities and significant risks across societal domains.",
+  "On one hand, AI enhances efficiency, accuracy, and scalability in fields such as healthcare, education, and logistics, enabling predictive diagnostics and personalized learning.",
+  "Conversely, its deployment raises ethical concerns, including algorithmic bias, surveillance, and labor displacement.",
+  "The opacity of decision-making in complex models challenges accountability, while unchecked automation may exacerbate inequality.",
+  "Responsible governance, transparency, and interdisciplinary oversight are essential to ensure that AI development aligns with human values and public interest."
+];
+
+// ===== Shuffle =====
+function shuffle(arr){return arr.sort(()=>Math.random()-0.5);}
+const source=document.getElementById("source");
+const target=document.getElementById("target");
+shuffle([...sentences]).forEach(text=>{
+  const div=document.createElement("div");
+  div.className="sentence";
+  div.draggable=true;
+  div.textContent=text;
+  source.appendChild(div);
+});
+
+// ===== Drag and Drop =====
+let dragged=null;
+document.addEventListener("dragstart",e=>{
+  if(e.target.classList.contains("sentence")){
+    dragged=e.target;
+    setTimeout(()=>dragged.classList.add("dragging"),0);
+  }
+});
+document.addEventListener("dragend",e=>{
+  if(e.target.classList.contains("sentence")){
+    e.target.classList.remove("dragging");
+    dragged=null;
+  }
+});
+document.querySelectorAll(".column").forEach(col=>{
+  col.addEventListener("dragover",e=>{
+    e.preventDefault();
+    const afterEl=getDragAfterElement(col,e.clientY);
+    if(afterEl==null) col.appendChild(dragged);
+    else col.insertBefore(dragged,afterEl);
+  });
+});
+function getDragAfterElement(container,y){
+  const els=[...container.querySelectorAll(".sentence:not(.dragging)")];
+  return els.reduce((closest,child)=>{
+    const box=child.getBoundingClientRect();
+    const offset=y-box.top-box.height/2;
+    if(offset<0&&offset>closest.offset) return {offset:offset,element:child};
+    else return closest;
+  },{offset:Number.NEGATIVE_INFINITY}).element;
+}
+
+// ===== Check Answers (PTE Adjacent-Link Scoring) =====
+document.getElementById("checkBtn").addEventListener("click",()=>{
+  const placed=[...target.querySelectorAll(".sentence")].map(e=>e.textContent.trim());
+  let score=0;
+  for(let i=0;i<sentences.length-1;i++){
+    const a=placed.indexOf(sentences[i]);
+    const b=placed.indexOf(sentences[i+1]);
+    if(a>-1 && b-a===1) score++;
+  }
+  const fb=document.getElementById("feedback");
+  fb.innerHTML=score===4
+    ?`✅ <span class="correct">Perfect! You scored ${score}/4 – all links correct.</span>`
+    :`⚠️ <span class="incorrect">You scored ${score}/4 correct links.</span>`;
+
+  // Save score to localStorage for total on cover page
+  localStorage.setItem("PTE_Part1_Score", score);
+});
+
+// ===== 5-Minute Timer =====
+let timeLeft=5*60;
+const timerDisplay=document.getElementById("timer");
+const checkBtn=document.getElementById("checkBtn");
+const countdown=setInterval(()=>{
+  const m=Math.floor(timeLeft/60);
+  const s=timeLeft%60;
+  timerDisplay.textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  if(timeLeft<=0){
+    clearInterval(countdown);
+    timerDisplay.textContent="00:00";
+    checkBtn.disabled=true;
+    checkBtn.style.opacity=0.6;
+    document.getElementById("feedback").innerHTML=`⏰ <span class="incorrect">Time’s up! You can no longer submit.</span>`;
+  }
+  timeLeft--;
+},1000);
+</script>
+</body>
+</html>
